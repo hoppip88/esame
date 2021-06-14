@@ -1,5 +1,6 @@
 import sqlite3
 
+
 class Dipartimento():
 
     def __init__(self,nome,codice) :
@@ -18,6 +19,8 @@ class Dipartimento():
         nome=self.nome
         lista.remove(self)
         print("\n dièartimento %s Cancellato"%(nome))
+  
+
 
 class Modello(): 
 
@@ -26,13 +29,15 @@ class Modello():
         self.descrizione=descrizione
         self.codDip=codDip
 
+ 
+
     def inserimento(self,lista):
         lista.append(self)
         print("modello 3d  inserito \n   ")
         self.stampa()
         
     def stampa(self):
-        
+
         print ("\nNome Modello:  %s \nDescrizione: %s \nDipartimento: %s \n"%(self.nome,self.descrizione,self.codDip))
 
 
@@ -57,7 +62,6 @@ class Modello():
         lista.remove(self)
         print("\n Modello %s Cancellato" %(nome))
 
-
     def inserimento_conDB(self,lista):
         lista.append(self)
         print("modello 3d  inserito \n")
@@ -65,10 +69,13 @@ class Modello():
         if(scelta=='S'):
             self.inserisci_db()
 
-
     def inserisci_db(self):
-        connessioneSQL.execute('insert into  modelli (nome, descrizione,cod_dip) values (?,?)', (self.nome,self.descrizione,self.codDip) )
+        connessioneSQL.execute('insert into  modelli (nome, descrizione,cod_dip) values (?,?,?)', (self.nome,self.descrizione,self.codDip) )
         print("modello 3d  inserito %s inserito nel database \n"%(self.nome))
+
+
+
+
 
 
 
@@ -90,6 +97,7 @@ dip3.inserimento(ListaDipartimenti)
 print("\n stampo lista dipartimenti inseriti ")
 for dip_sel in ListaDipartimenti:
     dip_sel.stampa()
+
 
 Lista=[]
 print("lista_ vuota",Lista)
@@ -142,6 +150,8 @@ print("\n\n modifico la descrizione del secondo  elemento ",Lista)
 mod2.modifica(Lista,'dip','2 ')
 
 
+
+
 print("\n\n imposto il database. se esiste mi connetto altrimenti prima lo creo e poi mi connetto \n")
 
 
@@ -185,4 +195,17 @@ elif (scelta=='D'):
             
 else:
     print("\n  SCELTA ERRATA \n")
+
+
+
+print("\n scegli un dipartimenti per stampare la lista completa  ")
+for dip_sel in ListaDipartimenti:
+    dip_sel.stampa()
+
+scelta=input(" inserire il numero del dipartimento di cui si voglio stampre tutti i modelli  \n ")
+for mod_sel in Lista:
+    if mod_sel.codDip == sceltaS:
+        mod_sel.stampa()
+
+
 

@@ -1,3 +1,5 @@
+import sqlite3
+
 class Dipartimento():
 
     def __init__(self,nome,codice) :
@@ -23,8 +25,6 @@ class Modello():
         self.nome=nome
         self.descrizione=descrizione
         self.codDip=codDip
-
- 
 
     def inserimento(self,lista):
         lista.append(self)
@@ -58,6 +58,17 @@ class Modello():
         print("\n Modello %s Cancellato" %(nome))
 
 
+    def inserimento_conDB(self,lista):
+        lista.append(self)
+        print("modello 3d  inserito \n")
+        scelta=input("vuoi inserire questo modello anche nel database ?")
+        if(scelta=='S'):
+            self.inserisci_db()
+
+
+    def inserisci_db(self):
+        connessioneSQL.execute('insert into  modelli (nome, descrizione,cod_dip) values (?,?)', (self.nome,self.descrizione,self.codDip) )
+        print("modello 3d  inserito %s inserito nel database \n"%(self.nome))
 
 
 
@@ -129,3 +140,49 @@ mod1.modifica(Lista,'desc','incredibilmente senza angoli ')
 
 print("\n\n modifico la descrizione del secondo  elemento ",Lista)
 mod2.modifica(Lista,'dip','2 ')
+
+
+print("\n\n imposto il database. se esiste mi connetto altrimenti prima lo creo e poi mi connetto \n")
+
+
+try:
+    f = open("db_modelli.db")
+    f.close()
+    connessioneSQL = sqlite3.connect('db_modelli.db')
+    print("\n il DB eiste \n")
+
+
+except IOError:
+    connessioneSQL = sqlite3.connect('db_modelli.db')
+    connessioneSQL.execute('CREATE TABLE modelli (id INTEGER PRIMARY KEY, nome, descrizione,cod_dip)')
+    print("\n File db creato \n")
+
+    
+
+
+print("\n\n inserisco  un altro modello questa volta nel DB")
+
+modsql=Modello("modello SQL"," questo modello viene salvato in SQL . ","3")
+modsql.inserimento_conDB(Lista)
+
+
+scelta=input("PREMERE \n N per cercare il nome di un modello   \n T per cercare la descrizone  \n D per cercare  il diaprtimento  \n ")
+if(scelta=='N'):
+    Ricerca = str(input("inserisci il nome del modello da ricercare? "))
+    for mod_sel in Lista:
+        if mod_sel.nome == Ricerca:
+            mod_sel.stampa()
+elif (scelta=='T'):
+    Ricerca = str(input("Inserisci la descrizione da cercare"))
+    for mod_sel in Lista:
+        if mod_sel.descrizione == Ricerca:
+            mod_sel.stampa()
+elif (scelta=='D'):
+    Ricerca = str(input("Inserisci il dipartimento "))
+    for mod_sel in Lista:
+        if mod_sel.codDip == Ricerca:
+            mod_sel.stampa()
+            
+else:
+    print("\n  SCELTA ERRATA \n")
+
